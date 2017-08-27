@@ -9,7 +9,7 @@ class Item extends Component {
     render() {
         return (
             <View style={styles.item}>
-            <Text style={styles.itemText}>{this.props.data.name} ({this.props.data.price},-)</Text>
+            <Text style={styles.itemText}>{this.props.data.name} om {this.props.data.time} dager</Text>
             <TouchableOpacity style={styles.deleteBtn} onPress={() => this.delete()}>
             <Text style={styles.btnText}>fjern</Text>
             </TouchableOpacity>
@@ -25,21 +25,26 @@ const styles = StyleSheet.create({
     item: {
         flex: 1,
         flexDirection: 'row',
+        justifyContent: 'center',
         marginTop: 5,
-        backgroundColor: '#ff9933',
     },
     itemText: {
-        fontSize: 30,
+        fontSize: 20,
+        width: 300,
+        backgroundColor: '#EAD7AC',
+        paddingLeft: 5
     },
     deleteBtn: {
-        left: 20,
         padding: 2,
         borderWidth: 1,
-        borderColor: '#000',
-        backgroundColor: '#cc0000',
+        borderColor: '#1F3227',
+        backgroundColor: '#C46C50',
+        marginLeft: 5,
+        width: 80,
+        alignItems: "center"
     },
     btnText: {
-        fontSize: 30,
+        fontSize: 20,
     }
 });
 
