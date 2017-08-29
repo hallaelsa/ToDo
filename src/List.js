@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import {Text, View, ListView, TouchableOpacity, TextInput, StyleSheet} from 'react-native';
+import {Text, View, ListView, TouchableOpacity, TextInput, Button, StyleSheet, AsyncStorage} from 'react-native';
 import Item from './Item';
+import Edit from './Edit';
+import { StackNavigator } from 'react-navigation';
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+
 
 class List extends Component {        
     constructor(props) {
@@ -9,31 +13,31 @@ class List extends Component {
         
         this.state = {
             data: [],
-            dataList : ds.cloneWithRows([]),
-            textInput: ""
+            dataList : ds.cloneWithRows([])
         }
     }
 
+    static navigationOptions = {
+        title: 'My Todo list',
+      };
+
     componentDidMount() {
         this.loadInitialData();
-    }
+    } 
+
+  
 
     render() {
+        const { navigate } = this.props.navigation;
+
         return(
             <View style={styles.outerContainer}>
+                <Button
+                    onPress={() => navigate('Edit')}
+                    title="Add new todo"
+                />
                 <View style = {styles.topContainer}>
-                    <TextInput
-                        onChangeText = { (text)=>this.setState({textInput: text}) }
-                        placeholder = "My task..."
-                        underlineColorAndroid = "transparent"
-                        style = {styles.inputField}
-                        ref = "input"
-                    />
-                    <TouchableOpacity 
-                        onPress={() => this.saveInput()}
-                        style = {styles.addBtn}>
-                        <Text style = {styles.addBtnText}>Legg til</Text>
-                    </TouchableOpacity>
+                    
                 </View>
                 <View style={styles.listContainer}>
                 <ListView
@@ -65,6 +69,16 @@ class List extends Component {
 
     loadInitialData(){
         // Last fra storage, http, etc ...
+
+        AsyncStorage.getItem("title").then((value)=> {
+            if (value !== null) {
+                var data = [
+                    {name: value}
+                ];
+                this.setState({data : data});
+            }
+        }).done();
+
         var data = [
             { name: "Vaske gulv", time: 14},
             { name: "Tørke støv", time: 20}
@@ -74,6 +88,8 @@ class List extends Component {
             data: data,
             dataList: ds.cloneWithRows(data)
         });
+
+        
     }
 
     add() {
@@ -86,26 +102,8 @@ class List extends Component {
         });
     }
 
-    saveInput() {
-        var input = this.state.textInput;
-        var data = this.state.data;
-        data.push({ name: input });
-
-        this.clearInputField();
-
-        this.setState({
-            data: data,
-            dataList: ds.cloneWithRows(data)
-        });
-
-        
-    }
-
-    clearInputField() {
-        this.refs.input.setNativeProps({text: ""});
-    }
-
 };
+
 
 const styles = StyleSheet.create({
     outerContainer: {
