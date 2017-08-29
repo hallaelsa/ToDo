@@ -41,7 +41,6 @@ class Edit extends Component {
 
     onSave() {
         AsyncStorage.setItem("title", this.state.textInput);
-        
         this.props.navigation.goBack();
     }
 
@@ -53,9 +52,32 @@ class Edit extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 20,
+        flexDirection: "row",
+        justifyContent: 'center',
+        marginTop: 50,
+        height: 40
 
-    }
+    },
+    inputField: {
+        width: 300,
+        paddingLeft: 2,
+        color: "#1F3227",
+        fontSize: 20,
+        backgroundColor: "#A19E82",
+    },
+    addBtn: {
+        padding: 2,
+        borderWidth: 1,
+        borderColor: '#1F3227',
+        backgroundColor: "#7A917B",
+        marginLeft: 5,
+        width: 80,
+        alignItems: "center"
+    },
+    addBtnText: {
+        fontSize: 20,
+        textAlignVertical: 'center'
+    },
 });
 
 module.exports = Edit;

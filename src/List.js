@@ -19,6 +19,15 @@ class List extends Component {
 
     static navigationOptions = {
         title: 'My Todo list',
+        headerTitleStyle: {
+            alignSelf: 'center',
+            color: 'white',
+            fontSize: 30
+        },
+        headerStyle: {
+        backgroundColor: '#7A917B',
+        },
+          
       };
 
     componentDidMount() {
@@ -32,9 +41,10 @@ class List extends Component {
 
         return(
             <View style={styles.outerContainer}>
-                <Button
+                <Button 
                     onPress={() => navigate('Edit')}
                     title="Add new todo"
+                    
                 />
                 <View style = {styles.topContainer}>
                     
@@ -113,33 +123,14 @@ const styles = StyleSheet.create({
     topContainer: {
         flexDirection: "row",
         justifyContent: 'center',
-        marginTop: 50,
-        height: 40
-    },
-    inputField: {
-        width: 300,
-        paddingLeft: 2,
-        color: "#1F3227",
-        fontSize: 20,
-        backgroundColor: "#A19E82",
-    },
-    addBtn: {
-        padding: 2,
-        borderWidth: 1,
-        borderColor: '#1F3227',
-        backgroundColor: "#7A917B",
-        marginLeft: 5,
-        width: 80,
-        alignItems: "center"
-    },
-    addBtnText: {
-        fontSize: 20,
-        textAlignVertical: 'center'
     },
     listContainer: {
         marginTop: 10,
         //backgroundColor: '#C46C50',
-    }
+    },
+    addBtn: {
+        backgroundColor: "#7A917B",
+    },
 
     
 
