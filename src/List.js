@@ -12,28 +12,33 @@ class List extends Component {
         super(props);
         
         this.state = {
-            data: [],
-            dataList : ds.cloneWithRows([])
+            dataList : ds.cloneWithRows(this.props.todos),
         }
     }
 
-    static navigationOptions = {
-        title: 'My Todo list',
-        headerTitleStyle: {
-            alignSelf: 'center',
-            color: 'white',
-            fontSize: 30
-        },
-        headerStyle: {
-        backgroundColor: '#7A917B',
-        },
-          
-      };
+    static navigationOptions = ({navigation}) => {
+        return {
+            title: 'My Todo list',
+            headerTitleStyle: {
+                alignSelf: 'center',
+                color: 'white',
+                fontSize: 30
+            },
+            headerStyle: {
+                backgroundColor: '#7A917B',
+                marginTop: 30,
+            },
+            //headerRight: <Button title="Lagre" disabled={false} onPress={() => navigation.state.params.onSave()}/>
+        };
+    };
+
+    // save() {
+    //     this.setState({tore: "Lagret!"});
+    // }
 
     componentDidMount() {
-        this.loadInitialData();
-    } 
-
+        //this.props.navigation.setParams({onSave: this.save.bind(this)});
+    }  
   
 
     render() {
@@ -50,67 +55,66 @@ class List extends Component {
                     
                 </View>
                 <View style={styles.listContainer}>
-                <ListView
+                 <ListView
                     dataSource = {this.state.dataList}
                     enableEmptySections={true}
                     renderRow = { 
                         (rowData, sectionId, rowId) => 
                         <Item 
-                            data={rowData} 
-                            onDelete={() => this.onRowDelete(rowId)} /> 
+                            data = {rowData} 
+                            onDelete={() => this.onRowDelete(rowId)} 
+                        /> 
                     }
-                />{/* 
-                <TouchableOpacity onPress={() => this.add()}>
-                    <Text>Legg til</Text>
-                </TouchableOpacity> */}
+                />
+                <Text>{this.state.tore}</Text>
                 </View>
             </View>
         )
     }
 
     onRowDelete(rowId) {
-        this.state.data.splice(rowId, 1);
+        // this.state.data.splice(rowId, 1);
 
-        this.setState({
-            data: this.state.data,
-            dataList: ds.cloneWithRows(this.state.data)
-        });
+        // this.setState({
+        //     data: this.state.data,
+        //     dataList: ds.cloneWithRows(this.state.data)
+        // });
     }
 
-    loadInitialData(){
-        // Last fra storage, http, etc ...
+    // loadInitialData(){
+    //     // Last fra storage, http, etc ...
 
-        AsyncStorage.getItem("title").then((value)=> {
-            if (value !== null) {
-                var data = [
-                    {name: value}
-                ];
-                this.setState({data : data});
-            }
-        }).done();
+    //     let todos = {todos: this.props.todos}
 
-        var data = [
-            { name: "Vaske gulv", time: 14},
-            { name: "Tørke støv", time: 20}
-        ];
+    //     AsyncStorage.getItem("title").then((value)=> {
+    //         if (value != null) {
+    //             var data = [
+    //                 {name: value}
+    //             ];
+    //             this.setState({data : data});
+    //         }
+    //     }).done();
 
-        this.setState({
-            data: data,
-            dataList: ds.cloneWithRows(data)
-        });
+    //     var data = [
+    //         { name: "Vaske gulv", time: 14},
+    //         { name: "Tørke støv", time: 20}
+    //     ];
 
-        
-    }
+    //     this.setState({
+    //         dataList: ds.cloneWithRows(todos)
+    //     });
+       
+    // }
 
-    add() {
-        var data = this.state.data;
-        data.push({ name: "Item " + (data.length + 1), price: 25});
+    // add() {
+    //     var data = this.state.data;
+    //     data.push({ name: "Item " + (data.length + 1), price: 25});
 
-        this.setState({
-            data: data,
-            dataList: ds.cloneWithRows(data)
-        });
-    }
+    //     this.setState({
+    //         data: data,
+    //         dataList: ds.cloneWithRows(data)
+    //     });
+    // }
 
 };
 

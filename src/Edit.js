@@ -1,64 +1,111 @@
 import React, { Component } from 'react';
-import {Text, View, TouchableOpacity, TextInput, StyleSheet, AsyncStorage} from 'react-native';
+import {Text, View, TouchableOpacity, TextInput, StyleSheet, AsyncStorage, Button} from 'react-native';
 import { StackNavigator } from 'react-navigation';
+
+import { NavigationActions } from 'react-navigation'
 import Item from './Item';
 import List from './List';
 
 class Edit extends Component {  
     constructor(props) {
         super(props);
-        this.state = { 
-            textInput: ""
-        };
     }
 
-    static navigationOptions = {
-        title: 'Add new todo',
-      };
+    static navigationOptions = ({navigation}) => {
+        let name;
+        let time;
+        let addTodo;
 
+        if(navigation.state.params){
+            name = navigation.state.params.name
+            time = navigation.state.params.time;
+      
+            if(navigation.state.params.addTodo){
+              addTodo = navigation.state.params.addTodo;
+            }
+        }
+        return {
+            title: 'Add new todo', 
+            headerRight: <Button title="Add" disabled={(!name || !time)} onPress={() =>
+                addTodo({name: name, time: time},
+                    navigation.dispatch(NavigationActions.reset({
+                    index: 0,
+                    actions: [NavigationActions.navigate({ routeName: 'Home'})]
+                  }))
+              )}/>
+        }
+
+
+    };
+
+    componentDidMount(){
+        this.props.navigation.setParams({addTodo: this.props.onAddTodo})
+    }
+
+    onChangeName(name){
+        this.setState({name:name});
+        this.props.navigation.setParams({name:name})
+      }
     
+    onChangeTime(time){
+        this.setState( {time: time} );
+        this.props.navigation.setParams( {time:time} )
+    }
+
+
+    clearInputField() {
+        this.refs.input.setNativeProps({text: ""});
+    }    
 
     render() {
         
+
         return (
             <View style={styles.container}>
                 <TextInput
-                    onChangeText = { (text)=>this.setState({textInput: text}) }
-                    placeholder = "My task..."
+                    onChangeText = { (name) => this.onChangeName(name) }
+                    placeholder = "What to do..."
                     underlineColorAndroid = "transparent"
                     style = {styles.inputField}
                     ref = "input"
                 />
-                <TouchableOpacity 
+                <TextInput
+                    onChangeText = { (time) => this.onChangeTime(time) }
+                    placeholder = "When..."
+                    underlineColorAndroid = "transparent"
+                    style = {styles.inputField2}
+                    ref = "input"
+                />
+                {/* <TouchableOpacity 
                     onPress={() => this.onSave()}
                     style = {styles.addBtn}>
                     <Text style = {styles.addBtnText}>Add</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             
             </View>
         )
     }
 
-    onSave() {
-        AsyncStorage.setItem("title", this.state.textInput);
-        this.props.navigation.goBack();
-    }
 
-    clearInputField() {
-        this.refs.input.setNativeProps({text: ""});
-    }
 
 }
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: "row",
+        flexDirection: "column",
         justifyContent: 'center',
         marginTop: 50,
         height: 40
 
     },
     inputField: {
+        width: 300,
+        paddingLeft: 2,
+        color: "#1F3227",
+        fontSize: 20,
+        backgroundColor: "#A19E82",
+    },
+    inputField2: {
         width: 300,
         paddingLeft: 2,
         color: "#1F3227",

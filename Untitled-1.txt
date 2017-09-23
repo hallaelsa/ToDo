@@ -1,0 +1,64 @@
+const mapStateToProps = (state, props) => {
+  return {
+    todos: state.todos,
+    helpText: props.helpText
+  }
+}
+
+const mapStateToProps = function(s,props) {
+  return {
+    todos: state.todos
+  }
+};
+
+mapStateToProps({}, {}); // { todos: ... }
+
+
+var tore = function(state, props) { }
+
+tore(x);
+tore(null, x);
+
+
+
+export const addTodo = (todo) => {
+  return{
+      type: Constants.ADD_TODO,
+      todo
+  }
+}
+
+export const addTodo = function(todo) {
+  return{
+      type: Constants.ADD_TODO,
+      todo: todo
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+this.props.onAddTodo({ name: "Tore"}) == dispatch(addTodo(todo))
+addTodo({ name: "Tore"}) == { type: Constants.ADD_TODO, todo: { name: "Tore"} }
+dispatch({ type: Constants.ADD_TODO, todo: { name: "Tore"} })
+
+
+let nextState = Object.assign({}, state);
+nextState.todos.push(action.todo);
+return nextState;
+
+
+
+
+
