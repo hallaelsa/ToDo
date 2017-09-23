@@ -13,6 +13,11 @@ function reducer(state = initState(), action){
       nextState.todos.push(action.todo);
       return nextState;
     }
+    case "DELETE_TODO": {
+      let nextState = Object.assign({}, state)
+      nextState.todos.splice(action.index, 1);
+      return nextState;
+    }
     default:
       return state;
   }

@@ -1,86 +1,67 @@
 import React, { Component } from 'react';
-import {Text, View, TouchableOpacity, TextInput, StyleSheet, AsyncStorage, Button} from 'react-native';
+import {Text, View, TouchableOpacity, TextInput, StyleSheet, AsyncStorage, Button, StatusBar} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
 import { NavigationActions } from 'react-navigation'
 import Item from './Item';
 import List from './List';
+import { connect } from 'react-redux';
+import {addTodo} from './Actions';
 
 class Edit extends Component {  
     constructor(props) {
         super(props);
+        
+        this.state = {
+            name : "",
+            time: ""
+        }
     }
 
     static navigationOptions = ({navigation}) => {
-        let name;
-        let time;
-        let addTodo;
-
-        if(navigation.state.params){
-            name = navigation.state.params.name
-            time = navigation.state.params.time;
-      
-            if(navigation.state.params.addTodo){
-              addTodo = navigation.state.params.addTodo;
-            }
-        }
         return {
-            title: 'Add new todo', 
-            headerRight: <Button title="Add" disabled={(!name || !time)} onPress={() =>
-                addTodo({name: name, time: time},
-                    navigation.dispatch(NavigationActions.reset({
-                    index: 0,
-                    actions: [NavigationActions.navigate({ routeName: 'Home'})]
-                  }))
-              )}/>
-        }
-
-
+            title: 'Add new todo',
+            headerStyle: {
+                backgroundColor: '#7A917B',
+                height: 56 + StatusBar.currentHeight,
+                paddingTop: StatusBar.currentHeight
+            }
+        };
     };
 
-    componentDidMount(){
-        this.props.navigation.setParams({addTodo: this.props.onAddTodo})
+    addTodo() {
+        var todo = {name: this.state.name, time: this.state.time};
+        this.props.onAddTodo(todo,
+            this.props.navigation.dispatch(NavigationActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'Home'})]
+          })));
     }
-
-    onChangeName(name){
-        this.setState({name:name});
-        this.props.navigation.setParams({name:name})
-      }
     
-    onChangeTime(time){
-        this.setState( {time: time} );
-        this.props.navigation.setParams( {time:time} )
-    }
-
-
-    clearInputField() {
-        this.refs.input.setNativeProps({text: ""});
-    }    
-
     render() {
         
 
         return (
             <View style={styles.container}>
                 <TextInput
-                    onChangeText = { (name) => this.onChangeName(name) }
+                    onChangeText = { (name) => this.setState({name:name}) }
                     placeholder = "What to do..."
                     underlineColorAndroid = "transparent"
                     style = {styles.inputField}
                     ref = "input"
                 />
                 <TextInput
-                    onChangeText = { (time) => this.onChangeTime(time) }
+                    onChangeText = { (time) => this.setState({time: time}) }
                     placeholder = "When..."
                     underlineColorAndroid = "transparent"
                     style = {styles.inputField2}
                     ref = "input"
                 />
-                {/* <TouchableOpacity 
-                    onPress={() => this.onSave()}
+                <TouchableOpacity 
+                    onPress={this.addTodo.bind(this)}
                     style = {styles.addBtn}>
                     <Text style = {styles.addBtnText}>Add</Text>
-                </TouchableOpacity> */}
+                </TouchableOpacity>
             
             </View>
         )
@@ -127,4 +108,17 @@ const styles = StyleSheet.create({
     },
 });
 
-module.exports = Edit;
+const mapDispatchToProps = (dispatch) => {
+    return {
+      onAddTodo: (todo) => {
+        dispatch(addTodo(todo))
+      }
+    }
+  }
+  
+  const AddTodo = connect(
+    null,
+    mapDispatchToProps
+  )(Edit)
+
+module.exports = AddTodo;

@@ -1,22 +1,24 @@
 import React, { Component } from 'react';
-import {Text, View, ListView, TouchableOpacity, TextInput, Button, StyleSheet, AsyncStorage} from 'react-native';
+import { Text, View, ListView, TouchableOpacity, TextInput, Button, StyleSheet, StatusBar } from 'react-native';
 import Item from './Item';
 import Edit from './Edit';
 import { StackNavigator } from 'react-navigation';
-const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+import { connect } from 'react-redux';
+import { deleteTodo } from './Actions';
+const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
 
 
-class List extends Component {        
+class List extends Component {
     constructor(props) {
         super(props);
-        
+
         this.state = {
-            dataList : ds.cloneWithRows(this.props.todos),
+            dataList: ds.cloneWithRows(this.props.todos),
         }
     }
 
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         return {
             title: 'My Todo list',
             headerTitleStyle: {
@@ -26,7 +28,8 @@ class List extends Component {
             },
             headerStyle: {
                 backgroundColor: '#7A917B',
-                marginTop: 30,
+                height: 56 + StatusBar.currentHeight,
+                paddingTop: StatusBar.currentHeight
             },
             //headerRight: <Button title="Lagre" disabled={false} onPress={() => navigation.state.params.onSave()}/>
         };
@@ -38,47 +41,43 @@ class List extends Component {
 
     componentDidMount() {
         //this.props.navigation.setParams({onSave: this.save.bind(this)});
-    }  
-  
+    }
+
 
     render() {
         const { navigate } = this.props.navigation;
 
-        return(
+        return (
             <View style={styles.outerContainer}>
-                <Button 
+                <Button
                     onPress={() => navigate('Edit')}
                     title="Add new todo"
-                    
+
                 />
-                <View style = {styles.topContainer}>
-                    
+                <View style={styles.topContainer}>
+
                 </View>
                 <View style={styles.listContainer}>
-                 <ListView
-                    dataSource = {this.state.dataList}
-                    enableEmptySections={true}
-                    renderRow = { 
-                        (rowData, sectionId, rowId) => 
-                        <Item 
-                            data = {rowData} 
-                            onDelete={() => this.onRowDelete(rowId)} 
-                        /> 
-                    }
-                />
-                <Text>{this.state.tore}</Text>
+                    <ListView
+                        dataSource={this.state.dataList}
+                        enableEmptySections={true}
+                        renderRow={
+                            (rowData, sectionId, rowId) =>
+                                <Item
+                                    data={rowData}
+                                    onDelete={() => this.onRowDelete(rowId)}
+                                />
+                        }
+                    />
+                    <Text>{this.state.tore}</Text>
                 </View>
             </View>
         )
     }
 
     onRowDelete(rowId) {
-        // this.state.data.splice(rowId, 1);
-
-        // this.setState({
-        //     data: this.state.data,
-        //     dataList: ds.cloneWithRows(this.state.data)
-        // });
+        this.props.onDeleteTodo(rowId)
+        this.setState({ dataList: ds.cloneWithRows(this.props.todos) });
     }
 
     // loadInitialData(){
@@ -103,7 +102,7 @@ class List extends Component {
     //     this.setState({
     //         dataList: ds.cloneWithRows(todos)
     //     });
-       
+
     // }
 
     // add() {
@@ -135,9 +134,25 @@ const styles = StyleSheet.create({
     addBtn: {
         backgroundColor: "#7A917B",
     },
-
-    
-
 });
 
-module.exports = List;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onDeleteTodo: (index) => {
+            dispatch(deleteTodo(index))
+        }
+    }
+}
+
+const mapStateToProps = (state, props) => {
+    return {
+        todos: state.todos
+    }
+}
+
+const TodoList = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(List)
+
+module.exports = TodoList;
