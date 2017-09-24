@@ -1,69 +1,129 @@
-import React, {Component} from 'react';
-import {StyleSheet, View, Text, TextInput, TouchableOpacity, AsyncStorage} from 'react-native';
+import React, { Component } from 'react';
+import { Text, View, ListView, TouchableOpacity, TextInput, Button, StyleSheet, StatusBar } from 'react-native';
+import Item from './Item';
+import Edit from './Edit';
+import { StackNavigator } from 'react-navigation';
+import { connect } from 'react-redux';
+const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
-export default class Test extends Component {
+class Test extends Component {
     constructor(props) {
         super(props);
-        this.state = { };
+
+        this.state = {
+            dataList: ds.cloneWithRows(this.props.todos),
+        }
     }
 
-    componentDidMount() {
-        AsyncStorage.getItem("outputKey").then((value)=> {
-            this.setState({"outputKey" : value});
-        }).done();
-    }
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: 'My Todo list',
+            headerTitleStyle: {
+                alignSelf: 'center',
+                color: 'white',
+                fontSize: 30
+            },
+            headerStyle: {
+                backgroundColor: '#7A917B',
+                height: 56 + StatusBar.currentHeight,
+                paddingTop: StatusBar.currentHeight
+            },
+        };
+    };
 
     render() {
+        const { navigate } = this.props.navigation;
+
         return (
-            <View style={styles.container}>
-                <Text style={styles.textOutput}>
-                    {this.state.outputKey}
-                </Text>
-                <TextInput
-                onChangeText={(text)=>this.saveData(text)}
-                placeholder="skriv noe..."
-                style={styles.textInput}/>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttontxt}>
-                        SAVE
-                    </Text>
-                </TouchableOpacity>
+            <View style={styles.outerContainer}>
+                <View style={styles.navigationbar}>
+                    <TouchableOpacity
+                        style={styles.navigate}
+                        title="Add new todo"
+                    >
+                        <Text style={styles.navigateCurrentBtn}>List</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => navigate('Edit')}
+                        style={styles.navigate}
+                        title="Add new todo"
+                    >
+                        <Text style={styles.navigateBtn}>Add new</Text>
+                    </TouchableOpacity>
+                </View>
+                
             
+                <View style={styles.listContainer}>
+                    <ListView
+                        dataSource={this.state.dataList}
+                        enableEmptySections={true}
+                        renderRow={
+                            (rowData, sectionId, rowId) =>
+                                <Item
+                                    data={rowData}
+                                    onDelete={() => this.onDelete(rowId)}
+                                />
+                        }
+                    />
+                </View>
             </View>
         )
     }
 
-    saveData(input) {
-        AsyncStorage.setItem("outputKey", input);
-        this.setState({"outputKey": input});
+    onDelete(index) {
+        this.props.onDelete(index)
+        this.setState({ dataList: ds.cloneWithRows(this.props.todos) });
     }
+};
 
-}
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 20,
-
+    outerContainer: {
+        flex: 1,
+        flexDirection: 'column'
     },
-    textOutput: {
-        color: "#000",
+    topContainer: {
+        flexDirection: "row",
+        justifyContent: 'center',
+    },
+    navigationbar: {
+        flexDirection: 'row',
+    },
+    navigate: {
+        flex: 1,
+    },
+    navigateBtn: {
+        textAlign: 'center',
+        fontSize: 20
+    },
+    navigateCurrentBtn: {
+        textAlign: 'center',
         fontSize: 20,
-        height: 30
+        borderBottomWidth: 5,
+        borderBottomColor: "#000"
     },
-    textInput: {
-        height: 40,
+    listContainer: {
         marginTop: 10,
-        backgroundColor: "#ddd"
+        //backgroundColor: '#C46C50',
     },
-    button: {
-        marginTop: 10,
-        height:25,
-        backgroundColor: "#333"
+    addBtn: {
+        backgroundColor: "#7A917B",
     },
-    buttontxt: {
-        textAlign: "center",
-        color: "#fff"
-    }
-
-
 });
+
+const mapStateToProps = (state, props) => {
+    return {
+        todos: state.todos
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onDelete: (index) => dispatch({ type: 'DELETE_TODO', index })
+    }
+}
+
+module.exports = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Test)

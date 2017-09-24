@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
-import { Text, View, ListView, TouchableOpacity, TextInput, Button, StyleSheet, StatusBar } from 'react-native';
+import { 
+    Text, 
+    View, 
+    ListView, 
+    TouchableOpacity,  
+    Button, 
+    StyleSheet, 
+    StatusBar } from 'react-native';
 import Item from './Item';
 import Edit from './Edit';
 import { StackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
-import { deleteTodo } from './Actions';
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
 
 
 class List extends Component {
@@ -23,98 +28,59 @@ class List extends Component {
             title: 'My Todo list',
             headerTitleStyle: {
                 alignSelf: 'center',
-                color: 'white',
+                color: 'black',
                 fontSize: 30
             },
             headerStyle: {
-                backgroundColor: '#7A917B',
                 height: 56 + StatusBar.currentHeight,
                 paddingTop: StatusBar.currentHeight
             },
-            //headerRight: <Button title="Lagre" disabled={false} onPress={() => navigation.state.params.onSave()}/>
+            headerLeft: null
         };
     };
-
-    // save() {
-    //     this.setState({tore: "Lagret!"});
-    // }
-
-    componentDidMount() {
-        //this.props.navigation.setParams({onSave: this.save.bind(this)});
-    }
-
 
     render() {
         const { navigate } = this.props.navigation;
 
         return (
             <View style={styles.outerContainer}>
-                <Button
-                    onPress={() => navigate('Edit')}
-                    title="Add new todo"
-
-                />
-                <View style={styles.topContainer}>
-
+                <View style={styles.navigationbar}>
+                    <TouchableOpacity
+                        style={styles.navigate}
+                    >
+                        <Text style={styles.navigateCurrentBtn}>My todos</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => navigate('Edit')}
+                        style={styles.navigate}
+                    >
+                        <Text style={styles.navigateBtn}>Add todo</Text>
+                    </TouchableOpacity>
                 </View>
+                
+            
                 <View style={styles.listContainer}>
                     <ListView
+                        style={styles.listview}
                         dataSource={this.state.dataList}
                         enableEmptySections={true}
                         renderRow={
                             (rowData, sectionId, rowId) =>
                                 <Item
                                     data={rowData}
-                                    onDelete={() => this.onRowDelete(rowId)}
+                                    onDelete={() => this.onDelete(rowId)}
                                 />
                         }
                     />
-                    <Text>{this.state.tore}</Text>
                 </View>
             </View>
         )
     }
 
-    onRowDelete(rowId) {
-        this.props.onDeleteTodo(rowId)
+    onDelete(index) {
+        this.props.onDelete(index)
         this.setState({ dataList: ds.cloneWithRows(this.props.todos) });
     }
-
-    // loadInitialData(){
-    //     // Last fra storage, http, etc ...
-
-    //     let todos = {todos: this.props.todos}
-
-    //     AsyncStorage.getItem("title").then((value)=> {
-    //         if (value != null) {
-    //             var data = [
-    //                 {name: value}
-    //             ];
-    //             this.setState({data : data});
-    //         }
-    //     }).done();
-
-    //     var data = [
-    //         { name: "Vaske gulv", time: 14},
-    //         { name: "Tørke støv", time: 20}
-    //     ];
-
-    //     this.setState({
-    //         dataList: ds.cloneWithRows(todos)
-    //     });
-
-    // }
-
-    // add() {
-    //     var data = this.state.data;
-    //     data.push({ name: "Item " + (data.length + 1), price: 25});
-
-    //     this.setState({
-    //         data: data,
-    //         dataList: ds.cloneWithRows(data)
-    //     });
-    // }
-
 };
 
 
@@ -127,22 +93,34 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: 'center',
     },
+    navigationbar: {
+        flexDirection: 'row',
+    },
+    navigate: {
+        flex: 1,
+        margin: 5
+    },
+    navigateBtn: {
+        textAlign: 'center',
+        fontSize: 20,
+        color: 'dimgrey',
+    },
+    navigateCurrentBtn: {
+        textAlign: 'center',
+        fontSize: 20,
+        borderBottomWidth: 5,
+        borderBottomColor: "#000"
+    },
     listContainer: {
-        marginTop: 10,
-        //backgroundColor: '#C46C50',
+        flex: 1,
+        marginTop: 20,
+    },
+    listview: {
     },
     addBtn: {
         backgroundColor: "#7A917B",
     },
 });
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        onDeleteTodo: (index) => {
-            dispatch(deleteTodo(index))
-        }
-    }
-}
 
 const mapStateToProps = (state, props) => {
     return {
@@ -150,9 +128,13 @@ const mapStateToProps = (state, props) => {
     }
 }
 
-const TodoList = connect(
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onDelete: (index) => dispatch({ type: 'DELETE_TODO', index })
+    }
+}
+
+module.exports = connect(
     mapStateToProps,
     mapDispatchToProps
 )(List)
-
-module.exports = TodoList;
