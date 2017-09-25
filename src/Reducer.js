@@ -2,14 +2,8 @@
 function initState() {
   return {
     todos: [
-      { name: "Lære react native", time: 14 },
-      { name: "lage app", time: 20 },
-      { name: "Lære react native", time: 14 },
-      { name: "lage app", time: 20 },
-      { name: "Lære react native", time: 14 },
-      { name: "lage app", time: 20 },
-      { name: "Lære react native", time: 14 },
-      { name: "lage app", time: 20 }
+      { name: "Lære react native", date: "2017-09-27", interval: 6 },
+      { name: "lage app", date: "2017-09-11", interval: 5 },
     ]
   };
 }

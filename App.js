@@ -8,7 +8,7 @@ import Add from './src/Edit';
 import Test from "./src/test";
 
 const AppNavigation = StackNavigator({
-  //Home: { screen: List },
+  Home: { screen: List },
   Edit: { screen: Add },
 });
 

@@ -41,7 +41,6 @@ class List extends Component {
 
     render() {
         const { navigate } = this.props.navigation;
-
         return (
             <View style={styles.outerContainer}>
                 <View style={styles.navigationbar}>
@@ -81,6 +80,7 @@ class List extends Component {
         this.props.onDelete(index)
         this.setState({ dataList: ds.cloneWithRows(this.props.todos) });
     }
+
 };
 
 

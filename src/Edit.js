@@ -21,7 +21,7 @@ class Edit extends Component {
 
         this.state = {
             name: "",
-            time: "",
+            interval: "",
             date: new Date(),
         }
     }
@@ -43,16 +43,17 @@ class Edit extends Component {
     };
 
     addTodo() {
-        if(!this.state.name || !this.state.time) {
+        if(!this.state.name || !this.state.interval || !this.state.date) {
             return;
         }
             
-        var todo = { name: this.state.name, time: this.state.time };
+        var todo = { name: this.state.name, interval: this.state.interval, time: this.state.date };
         this.props.onAddTodo(todo,
             this.props.navigation.dispatch(NavigationActions.reset({
                 index: 0,
                 actions: [NavigationActions.navigate({ routeName: 'Home' })]
-            })));
+            }))
+        );
     }
 
  
@@ -93,7 +94,7 @@ class Edit extends Component {
                     />                
                     <Text style={styles.labels}>Interval (days): </Text>
                     <TextInput
-                        onChangeText={(time) => this.setState({ time: time })}
+                        onChangeText={(interval) => this.setState({ interval: interval })}
                         placeholder="..."
                         underlineColorAndroid="transparent"
                         keyboardType="numeric"
@@ -170,9 +171,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         borderWidth: 1,
         borderColor: 'darkgrey',
-        // shadowColor: '#000',
-        // shadowOpacity: 1,
-        // shadowRadius: 3,
         backgroundColor: "#fff",
         alignSelf: 'stretch',
     },
