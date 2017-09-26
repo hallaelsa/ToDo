@@ -5,6 +5,7 @@ import {
     ListView, 
     TouchableOpacity,  
     Button, 
+    TouchableHighlight,
     StyleSheet, 
     StatusBar } from 'react-native';
 import Item from './Item';
@@ -43,7 +44,7 @@ class List extends Component {
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.outerContainer}>
-                
+{/*                 
                 <View style={styles.navigationbar}>
                     <TouchableOpacity
                         style={styles.navigate}
@@ -56,7 +57,7 @@ class List extends Component {
                     >
                         <Text style={styles.navigateBtn}>Add todo</Text>
                     </TouchableOpacity>
-                </View>
+                </View> */}
             
                 <View style={styles.listContainer}>
                     <ListView
@@ -72,6 +73,13 @@ class List extends Component {
                         }
                     />
                 </View>
+                <TouchableHighlight 
+                    style={styles.addBtn}
+                    underlayColor='darkred'
+                    onPress={() => navigate('Edit')}
+                >
+                    <Text style={styles.addBtnTxt}>+</Text>
+                </TouchableHighlight>
             </View>
         )
     }
@@ -113,13 +121,35 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         flex: 1,
-        marginTop: 20,
     },
     listview: {
+        paddingTop: 8,
     },
     addBtn: {
-        backgroundColor: "#7A917B",
+        backgroundColor: 'crimson',
+        borderColor: 'crimson',
+        borderWidth: 1,
+        height: 80,
+        width: 80,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        bottom: 20,
+        right:20,
+        elevation: 3,
+        shadowColor: "#000000",
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        shadowOffset: {
+          height: 1,
+          width: 0
+        }
     },
+    addBtnTxt: {
+        color: 'white',
+        fontSize: 25,
+    }
 });
 
 const mapStateToProps = (state, props) => {

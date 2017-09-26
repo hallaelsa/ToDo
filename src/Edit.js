@@ -40,7 +40,6 @@ class Edit extends Component {
                 height: 56 + StatusBar.currentHeight,
                 paddingTop: StatusBar.currentHeight
             },
-            headerLeft: null
         };
     };
 
@@ -68,7 +67,7 @@ class Edit extends Component {
         
         return (
             <View style={styles.container}>
-                <View style={styles.navigationbar}>
+                {/* <View style={styles.navigationbar}>
                     <TouchableOpacity
                         onPress={() => navigate('Home')}
                         style={styles.navigate}
@@ -80,7 +79,7 @@ class Edit extends Component {
                     >
                         <Text style={styles.navigateCurrentBtn}>Add todo</Text>
                     </TouchableOpacity>
-                </View>
+                </View> */}
                 <KeyboardAwareScrollView
                     resetScrollToCoords={{ x: 0, y: 0 }}
                    // scrollEnabled={true}
@@ -169,6 +168,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'darkgrey',
         width: 340,
+        elevation: 2,
     },
     inputField: {
         marginTop: 5,
@@ -178,6 +178,7 @@ const styles = StyleSheet.create({
         borderColor: 'darkgrey',
         backgroundColor: "#fff",
         alignSelf: 'stretch',
+        elevation: 2,
     },
     addBtn: {
         marginTop: 20,
@@ -186,6 +187,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         alignSelf: 'stretch',
         width: 340,
+        elevation: 2,
     },
     addBtnText: {
         padding: 5,
