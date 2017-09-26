@@ -67,19 +67,6 @@ class Edit extends Component {
         
         return (
             <View style={styles.container}>
-                {/* <View style={styles.navigationbar}>
-                    <TouchableOpacity
-                        onPress={() => navigate('Home')}
-                        style={styles.navigate}
-                    >
-                        <Text style={styles.navigateBtn}>My todos</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.navigate}
-                    >
-                        <Text style={styles.navigateCurrentBtn}>Add todo</Text>
-                    </TouchableOpacity>
-                </View> */}
                 <KeyboardAwareScrollView
                     resetScrollToCoords={{ x: 0, y: 0 }}
                    // scrollEnabled={true}

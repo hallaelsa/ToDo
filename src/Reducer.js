@@ -4,12 +4,12 @@ function initState() {
   return {
     todos: [
       { name: "Lære react native", date: moment().format("YYYY-MM-DD"), interval: 6 },
-      { name: "lage app", date: moment("2017-09-30").format("YYYY-MM-DD"), interval: 5 },
+      { name: "lage app", date: moment("2017-10-30").format("YYYY-MM-DD"), interval: 5 },
       { name: "Lære react native", date: moment().format("YYYY-MM-DD"), interval: 6 },
       { name: "lage app", date: moment("2017-09-30").format("YYYY-MM-DD"), interval: 5 },
-      { name: "Lære react native", date: moment().format("YYYY-MM-DD"), interval: 6 },
-      { name: "lage app", date: moment("2017-09-30").format("YYYY-MM-DD"), interval: 5 },
-      { name: "Lære react native", date: moment().format("YYYY-MM-DD"), interval: 6 },
+      { name: "Lære react native", date: moment("2017-10-07").format("YYYY-MM-DD"), interval: 6 },
+      { name: "lage app", date: moment("2017-12-31").format("YYYY-MM-DD"), interval: 5 },
+      { name: "Lære react native", date: moment("2017-11-30").format("YYYY-MM-DD"), interval: 6 },
       { name: "lage app", date: moment("2017-09-30").format("YYYY-MM-DD"), interval: 5 },
       { name: "Lære react native", date: moment().format("YYYY-MM-DD"), interval: 6 },
       { name: "lage app", date: moment("2017-09-30").format("YYYY-MM-DD"), interval: 5 },

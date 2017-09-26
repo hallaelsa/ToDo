@@ -20,7 +20,7 @@ class List extends Component {
         super(props);
 
         this.state = {
-            dataList: ds.cloneWithRows(this.props.todos),
+            dataList: ds.cloneWithRows(this.sortTodos()),
         }
     }
 
@@ -40,8 +40,25 @@ class List extends Component {
         };
     };
 
+    sortTodos(){
+        let sortedTodos = this.props.todos.sort((a,b) => {
+            if (a.date < b.date) {
+                return -1;
+            }
+            if (a.date > b.date) {
+                return 1;
+            }
+            return 0;
+        });
+
+        return sortedTodos;
+    }
+    
+
     render() {
         const { navigate } = this.props.navigation;
+
+
         return (
             <View style={styles.outerContainer}>
 {/*                 
@@ -77,7 +94,7 @@ class List extends Component {
                     style={styles.addBtn}
                     underlayColor='darkred'
                     onPress={() => navigate('Edit')}
-                >
+                  >
                     <Text style={styles.addBtnTxt}>+</Text>
                 </TouchableHighlight>
             </View>
