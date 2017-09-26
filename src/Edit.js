@@ -14,6 +14,8 @@ import { NavigationActions } from 'react-navigation'
 import Item from './Item';
 import List from './List';
 import { connect } from 'react-redux';
+import moment from 'moment';
+
 
 class Edit extends Component {
     constructor(props) {
@@ -22,7 +24,7 @@ class Edit extends Component {
         this.state = {
             name: "",
             interval: "",
-            date: new Date(),
+            date: "",
         }
     }
 
@@ -47,7 +49,10 @@ class Edit extends Component {
             return;
         }
             
-        var todo = { name: this.state.name, interval: this.state.interval, time: this.state.date };
+        var todo = { name: this.state.name, 
+                    interval: this.state.interval, 
+                    date: moment(this.state.date).format("YYYY-MM-DD") 
+                };
         this.props.onAddTodo(todo,
             this.props.navigation.dispatch(NavigationActions.reset({
                 index: 0,

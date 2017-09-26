@@ -43,6 +43,7 @@ class List extends Component {
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.outerContainer}>
+                
                 <View style={styles.navigationbar}>
                     <TouchableOpacity
                         style={styles.navigate}
@@ -56,7 +57,6 @@ class List extends Component {
                         <Text style={styles.navigateBtn}>Add todo</Text>
                     </TouchableOpacity>
                 </View>
-                
             
                 <View style={styles.listContainer}>
                     <ListView

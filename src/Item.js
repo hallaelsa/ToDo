@@ -6,29 +6,29 @@ import {
     TouchableOpacity, 
     StyleSheet
 } from 'react-native';
+import moment from 'moment';
 
 class Item extends Component {
     constructor(props) {
         super(props);
-
     
     }
 
     render() {
-        var today = new Date();
-        var date = new Date(this.props.data.date);
-        var daysLeft = 0;
-        if(today < date) {
-            var timeDiff = Math.abs(date.getTime() - today.getTime() );
-            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-            daysLeft = diffDays;
-        } else{
-            daysLeft = 0;
-        }
+        var today = moment().format("YYYY-MM-DD");
+        var date = this.props.data.date;
+        var timeDiff = moment(date).diff(today, 'days')
+        var daysLeft = timeDiff < 0 ? 0 : timeDiff;
+        
+        
+        
+
 
         return (
             <View style={styles.container}>
-
+                {/* <TouchableOpacity  onPress={() => alert(date)}>
+                    <Text>trykk</Text>
+                </TouchableOpacity> */}
                 <View style={styles.itemText}>
                     <Text style={styles.itemMainText}>{this.props.data.name}</Text>
                     <Text style={styles.itemSmallText}> startdate...{this.props.data.date}</Text>
