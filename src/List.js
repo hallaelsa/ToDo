@@ -12,8 +12,8 @@ import Item from './Item';
 import Edit from './Edit';
 import { StackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
-const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
+const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
 class List extends Component {
     constructor(props) {
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     listview: {
-        paddingTop: 8,
+        marginTop: 8,
     },
     addBtn: {
         backgroundColor: 'crimson',

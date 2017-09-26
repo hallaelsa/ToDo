@@ -33,7 +33,7 @@ class Item extends Component {
                     <Text style={styles.btnText}>Edit</Text>
                 </TouchableOpacity>
                 </View>
-
+                <View style={daysLeft > 0 ? styles.Greenbar : styles.Redbar}></View>
                 <TouchableOpacity 
                     style={styles.itemText}
                     onPress={() => this.setState({isCollapsed : !this.state.isCollapsed, invisible : !this.state.invisible})}
@@ -71,12 +71,10 @@ const styles = StyleSheet.create({
         flex: 4,
         flexDirection: 'column',
         alignSelf: 'stretch',
-        //padding: 8,
+        marginLeft: 8,
     },
     itemMainText: {
         fontSize: 20,
-        //textAlign:'center',
-        //alignSelf:'center',
     },
     itemSmallText: {
         //textAlign:'center',
@@ -98,6 +96,14 @@ const styles = StyleSheet.create({
     },
     collapsible: {
        // flexDirection: 'row',
+    },
+    Redbar: {
+        width: 5,
+        backgroundColor: 'red',
+    },
+    Greenbar: {
+        width: 5,
+        backgroundColor: 'green',
     }
 });
 
