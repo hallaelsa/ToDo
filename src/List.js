@@ -12,6 +12,7 @@ import Item from './Item';
 import Edit from './Edit';
 import { StackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
@@ -61,20 +62,6 @@ class List extends Component {
 
         return (
             <View style={styles.outerContainer}>
-{/*                 
-                <View style={styles.navigationbar}>
-                    <TouchableOpacity
-                        style={styles.navigate}
-                    >
-                        <Text style={styles.navigateCurrentBtn}>My todos</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => navigate('Edit')}
-                        style={styles.navigate}
-                    >
-                        <Text style={styles.navigateBtn}>Add todo</Text>
-                    </TouchableOpacity>
-                </View> */}
             
                 <View style={styles.listContainer}>
                     <ListView
@@ -85,7 +72,8 @@ class List extends Component {
                             (rowData, sectionId, rowId) =>
                                 <Item
                                     data={rowData}
-                                    onDelete={() => this.onDelete(rowId)}
+                                    onRepeat={() => this.onRepeat(rowId)}
+                                    onUpdate={() => this.onUpdate(rowId, navigate)}
                                 />
                         }
                     />
@@ -101,9 +89,15 @@ class List extends Component {
         )
     }
 
-    onDelete(index) {
-        this.props.onDelete(index)
-        this.setState({ dataList: ds.cloneWithRows(this.props.todos) });
+    onRepeat(index) {
+        var todo = this.props.todos[index];
+        todo.date = moment().add(todo.interval, 'd').format("YYYY-MM-DD");
+        this.props.onUpdate(index, todo);
+        this.setState({ dataList: ds.cloneWithRows(this.sortTodos()) });
+    }
+
+    onUpdate(id, navigate) {
+        navigate('Edit', {index : id})
     }
 
 };
@@ -177,7 +171,7 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onDelete: (index) => dispatch({ type: 'DELETE_TODO', index })
+        onUpdate: (index, todo) => dispatch({ type: 'UPDATE_TODO', index, todo }),
     }
 }
 

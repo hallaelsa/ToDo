@@ -20,17 +20,25 @@ import moment from 'moment';
 class Edit extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            name: "",
-            interval: "",
-            date: "",
-        }
+        
+        if (this.props.navigation.state.params == null) {
+            this.state = { name: "", interval: "", date: moment().format("YYYY-MM-DD")};
+        }            
+        else {
+            var index = this.props.navigation.state.params.index;
+            var todo = this.props.todos[index];
+            this.state = {
+                index,
+                name: todo.name,
+                interval: todo.interval,
+                date: todo.date,
+            }
+        }         
     }
 
     static navigationOptions = ({ navigation }) => {
         return {
-            title: 'Add new todo',
+            title: navigation.state.params != null ? 'Edit todo' : 'Add new todo',
             headerTitleStyle: {
                 alignSelf: 'center',
                 color: 'black',
@@ -43,24 +51,33 @@ class Edit extends Component {
         };
     };
 
+    navigateCallback() {
+        return this.props.navigation.dispatch(NavigationActions.reset({
+            index: 0, actions: [NavigationActions.navigate({ routeName: 'Home' })]
+        }));        
+    }    
+
     addTodo() {
         if(!this.state.name || !this.state.interval || !this.state.date) {
             return;
         }
             
-        var todo = { name: this.state.name, 
-                    interval: this.state.interval, 
-                    date: moment(this.state.date).format("YYYY-MM-DD") 
-                };
-        this.props.onAddTodo(todo,
-            this.props.navigation.dispatch(NavigationActions.reset({
-                index: 0,
-                actions: [NavigationActions.navigate({ routeName: 'Home' })]
-            }))
-        );
-    }
+        var todo = { 
+            name: this.state.name, 
+            interval: this.state.interval, 
+            date: moment(this.state.date).format("YYYY-MM-DD") 
+        };
 
- 
+        if (this.state.index != null) {
+            this.props.onUpdateTodo(this.state.index, todo, this.navigateCallback());
+        } else {
+            this.props.onAddTodo(todo, this.navigateCallback());
+        }        
+    } 
+
+    onDelete(index) {
+        this.props.onDelete(index, this.navigateCallback());
+    }
 
     render() {
         const { navigate } = this.props.navigation;
@@ -72,8 +89,7 @@ class Edit extends Component {
                    // scrollEnabled={true}
                     enableOnAndroid={ true }
                     style={styles.inputContainer}
-                    extraScrollHeight={ 5 }
-                >
+                    extraScrollHeight={ 5 }>
                 <View >
                     <Text style={styles.labels}>Todo: </Text>
                     <TextInput
@@ -81,7 +97,7 @@ class Edit extends Component {
                         placeholder="..."
                         underlineColorAndroid="transparent"
                         style={styles.inputField}
-                        ref="input"
+                        value={this.state.name}
                     />                
                     <Text style={styles.labels}>Interval (days): </Text>
                     <TextInput
@@ -90,7 +106,7 @@ class Edit extends Component {
                         underlineColorAndroid="transparent"
                         keyboardType="numeric"
                         style={styles.inputField}
-                        ref="input"
+                        value={this.state.interval.toString()}
                     />
                     <Text style={styles.labels}>Begin: </Text>
                     <DatePicker
@@ -105,8 +121,13 @@ class Edit extends Component {
                     <TouchableOpacity
                         onPress={this.addTodo.bind(this)}
                         style={styles.addBtn}>
-                        <Text style={styles.addBtnText}>Add</Text>
+                        <Text style={styles.addBtnText}> {this.state.index != null ? "Update" : "Add"} </Text>
                     </TouchableOpacity>
+                    {this.state.index != null && <TouchableOpacity
+                        onPress={() => this.onDelete(this.state.index)}
+                        style={styles.deleteBtn}>
+                        <Text style={styles.addBtnText}> Delete </Text>
+                    </TouchableOpacity>}
                 </View>
                 </KeyboardAwareScrollView>
             </View>
@@ -176,21 +197,41 @@ const styles = StyleSheet.create({
         width: 340,
         elevation: 2,
     },
+    deleteBtn: {
+        marginTop: 20,
+        borderRadius: 10,
+        backgroundColor: "crimson",
+        alignItems: "center",
+        alignSelf: 'stretch',
+        width: 340,
+        elevation: 2,
+    },
     addBtnText: {
         padding: 5,
         fontSize: 20,
         color: '#fff',
         textAlignVertical: 'center'
     },
+    invisible: {
+        display: 'none',
+    }
 });
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onAddTodo: (todo) => dispatch({ type: 'ADD_TODO', todo })
+        onAddTodo: (todo) => dispatch({ type: 'ADD_TODO', todo }),
+        onUpdateTodo: (index, todo) => dispatch({ type: 'UPDATE_TODO', index, todo }),        
+        onDelete: (index) => dispatch({ type: 'DELETE_TODO', index }),
+    }
+}
+
+const mapStateToProps = (state, props) => {
+    return {
+        todos: state.todos
     }
 }
 
 module.exports = connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(Edit)

@@ -29,8 +29,11 @@ class Item extends Component {
         return (
             <View style={styles.container}>
                 <View style={{flex: 1}}>
-                <TouchableOpacity style={this.state.invisible ? styles.invisible : styles.deleteBtn} onPress={() => this.delete()}>
+                <TouchableOpacity style={this.state.invisible ? styles.invisible : styles.deleteBtn} onPress={() => this.update()}>
                     <Text style={styles.btnText}>Edit</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={this.state.invisible ? styles.invisible : styles.deleteBtn} onPress={() => this.repeat()}>
+                    <Text style={styles.btnText}>Repeat</Text>
                 </TouchableOpacity>
                 </View>
                 <View style={daysLeft > 0 ? styles.Greenbar : styles.Redbar}></View>
@@ -52,8 +55,14 @@ class Item extends Component {
         );
     }
 
-    delete() {
-        this.props.onDelete && this.props.onDelete();
+
+    repeat() {
+        this.setState({invisible: true, isCollapsed: true});
+        this.props.onRepeat && this.props.onRepeat();
+    }
+
+    update() {
+        this.props.onUpdate();
     }
 
    
@@ -77,7 +86,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     itemSmallText: {
-        //textAlign:'center',
+        color: 'dimgrey',
     },
     deleteBtn: {
         flex: 1,
@@ -90,7 +99,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         padding: 5,
         backgroundColor: 'crimson',
-        borderRadius: 10,
+        borderRadius: 50,
         textAlign: 'center',
         color: '#fff',
     },
