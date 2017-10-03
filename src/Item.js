@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import moment from 'moment';
 import Collapsible from 'react-native-collapsible';
+/////kun midlertidig!!!
+var time = 0;
 
 class Item extends Component {
     constructor(props) {
@@ -15,9 +17,22 @@ class Item extends Component {
 
         this.state ={
             isCollapsed: true,
-            invisible: true
+            invisible: true,
+            timecount:''
         }
     
+    }
+
+    /////////// Dette funker men er det greit...??
+    componentDidMount() {
+        this.timer = setInterval(() => {
+            time++;
+            this.setState({timecount: time})
+        }, 5000);
+    }
+      
+    componentWillUnmount() {
+        clearInterval(this.timer);
     }
 
     render() {
@@ -42,7 +57,7 @@ class Item extends Component {
                     onPress={() => this.setState({isCollapsed : !this.state.isCollapsed, invisible : !this.state.invisible})}
                  >
                     <Text style={styles.itemMainText}>{this.props.data.name}</Text> 
-                    <Text style={styles.itemSmallText}> {daysLeft} days left</Text>
+                    <Text style={styles.itemSmallText}> {daysLeft} {this.state.timecount} days left</Text>
                     <Collapsible 
                         collapsed={this.state.isCollapsed}
                         style={styles.collapsible}
