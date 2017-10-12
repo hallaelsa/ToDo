@@ -15,6 +15,7 @@ import Item from './Item';
 import List from './List';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import Icon from 'react-native-vector-icons/Entypo';
 
 
 class Edit extends Component {
@@ -79,6 +80,13 @@ class Edit extends Component {
         this.props.onDelete(index, this.navigateCallback());
     }
 
+    onRepeat() {
+        var index = this.props.navigation.state.params.index;
+        var todo = this.props.todos[index];
+        todo.date = moment().add(todo.interval, 'd').format("YYYY-MM-DD");
+        this.props.onUpdateTodo(index, todo, this.navigateCallback());
+    }
+
     render() {
         const { navigate } = this.props.navigation;
         
@@ -99,7 +107,7 @@ class Edit extends Component {
                         style={styles.inputField}
                         value={this.state.name}
                     />                
-                    <Text style={styles.labels}>Interval (days): </Text>
+                    <Text style={styles.labels}>Repeat every (days): </Text>
                     <TextInput
                         onChangeText={(interval) => this.setState({ interval: interval })}
                         placeholder="..."
@@ -130,6 +138,11 @@ class Edit extends Component {
                     </TouchableOpacity>}
                 </View>
                 </KeyboardAwareScrollView>
+                {this.state.index != null && <TouchableOpacity 
+                    style={styles.repeatBtn} 
+                    onPress={() => this.onRepeat()}>
+                    <Icon name="cycle" size={30} color={'#fff'}/>
+                </TouchableOpacity>}
             </View>
         )
     }
@@ -214,6 +227,25 @@ const styles = StyleSheet.create({
     },
     invisible: {
         display: 'none',
+    },
+    repeatBtn: {
+        backgroundColor: 'crimson',
+        height: 60,
+        width: 60,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        bottom: 20,
+        right:20,
+        elevation: 3,
+        shadowColor: "#000000",
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        shadowOffset: {
+          height: 1,
+          width: 0
+        }
     }
 });
 

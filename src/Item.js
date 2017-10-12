@@ -7,7 +7,7 @@ import {
     StyleSheet
 } from 'react-native';
 import moment from 'moment';
-import Collapsible from 'react-native-collapsible';
+import Icon from 'react-native-vector-icons/Entypo';
 /////kun midlertidig!!!
 var time = 0;
 
@@ -16,7 +16,6 @@ class Item extends Component {
         super(props);
 
         this.state ={
-            isCollapsed: true,
             invisible: true,
             timecount:''
         }
@@ -44,27 +43,17 @@ class Item extends Component {
         return (
             <View style={styles.container}>
                 <View style={{flex: 1}}>
-                <TouchableOpacity style={this.state.invisible ? styles.invisible : styles.deleteBtn} onPress={() => this.update()}>
-                    <Text style={styles.btnText}>Edit</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={this.state.invisible ? styles.invisible : styles.deleteBtn} onPress={() => this.repeat()}>
-                    <Text style={styles.btnText}>Repeat</Text>
-                </TouchableOpacity>
+                {daysLeft == 0 && <TouchableOpacity style={styles.repeatBtn} onPress={() => this.repeat()}>
+                    <Icon name="cycle" size={30} color={'#fff'}/>
+                </TouchableOpacity>}
                 </View>
                 <View style={daysLeft > 0 ? styles.Greenbar : styles.Redbar}></View>
                 <TouchableOpacity 
                     style={styles.itemText}
-                    onPress={() => this.setState({isCollapsed : !this.state.isCollapsed, invisible : !this.state.invisible})}
+                    onPress={() => this.update()}
                  >
                     <Text style={styles.itemMainText}>{this.props.data.name}</Text> 
-                    <Text style={styles.itemSmallText}> {daysLeft} {this.state.timecount} days left</Text>
-                    <Collapsible 
-                        collapsed={this.state.isCollapsed}
-                        style={styles.collapsible}
-                     >
-                            <Text style={styles.itemSmallText}> Do it by: {this.props.data.date}</Text>
-                            <Text style={styles.itemSmallText}> Interval: {this.props.data.interval} days</Text>
-                    </Collapsible>     
+                    <Text style={styles.itemSmallText}> {daysLeft} days left</Text> 
                 </TouchableOpacity>       
             </View>
         );
@@ -72,7 +61,6 @@ class Item extends Component {
 
 
     repeat() {
-        this.setState({invisible: true, isCollapsed: true});
         this.props.onRepeat && this.props.onRepeat();
     }
 
@@ -109,12 +97,19 @@ const styles = StyleSheet.create({
     invisible: {
         display: 'none',
     },
-    btnText: {
-        marginRight: 8,
-        fontSize: 18,
-        padding: 5,
-        backgroundColor: 'crimson',
+    repeatBtn: {
+        flexDirection: 'row',
+        width: 50,
+        height: 50,
         borderRadius: 50,
+        backgroundColor: 'crimson',
+        elevation: 3,
+        alignItems: 'center',
+        justifyContent:'center',
+    },
+    btnText: {
+        fontSize: 12,
+        alignSelf: 'center',
         textAlign: 'center',
         color: '#fff',
     },

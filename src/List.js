@@ -59,7 +59,6 @@ class List extends Component {
     render() {
         const { navigate } = this.props.navigation;
 
-
         return (
             <View style={styles.outerContainer}>
             
@@ -134,14 +133,12 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     listview: {
-        marginTop: 8,
+        //marginTop: 1,
     },
     addBtn: {
-        backgroundColor: 'crimson',
-        borderColor: 'crimson',
-        borderWidth: 1,
-        height: 80,
-        width: 80,
+        backgroundColor: 'dodgerblue',
+        height: 60,
+        width: 60,
         borderRadius: 50,
         alignItems: 'center',
         justifyContent: 'center',
