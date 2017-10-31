@@ -3,6 +3,9 @@
 Mitt første prosjekt i React-native.
 Appen lar brukeren spesifisere et intervall til hver todo slik at de kan startes på nytt når man har utført oppgaven.
 
+![alt text](https://user-images.githubusercontent.com/22349177/32228457-987556fa-be4e-11e7-883c-b83e1e1d4e49.png)
+
+
 
 
 
