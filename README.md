@@ -1,7 +1,9 @@
-#Todo app
+# Todo app
 
 
 ![alt text](https://photos.app.goo.gl/1KFq4FIC3NcQqPO43)
+
+<img src="https://photos.app.goo.gl/1KFq4FIC3NcQqPO43" width="350"/>
 
 
 
