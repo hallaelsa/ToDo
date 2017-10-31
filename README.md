@@ -7,12 +7,12 @@ Appen lar brukeren spesifisere et intervall til hver todo slik at de kan startes
 
 ## Home screen
 
-![alt text](https://user-images.githubusercontent.com/22349177/32228457-987556fa-be4e-11e7-883c-b83e1e1d4e49.png) 
+![alt text](https://user-images.githubusercontent.com/22349177/32228457-987556fa-be4e-11e7-883c-b83e1e1d4e49.png =200x) 
 
 
 ## Edit screen
 
-![alt text](https://user-images.githubusercontent.com/22349177/32228511-b7498ba0-be4e-11e7-8b4a-87bec5b415fb.png) 
+![alt text](https://user-images.githubusercontent.com/22349177/32228511-b7498ba0-be4e-11e7-8b4a-87bec5b415fb.png =200x) 
 
 
 
