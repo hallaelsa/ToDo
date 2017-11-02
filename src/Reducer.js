@@ -3,16 +3,12 @@ import moment from 'moment';
 function initState() {
   return {
     todos: [
-      { name: "item 1", date: moment().format("YYYY-MM-DD"), interval: 6 },
-      { name: "item 2", date: moment("2017-10-30").format("YYYY-MM-DD"), interval: 5 },
-      { name: "item 3", date: moment().format("YYYY-MM-DD"), interval: 10 },
-      { name: "item 4", date: moment("2017-12-30").format("YYYY-MM-DD"), interval: 12 },
-      { name: "item 5", date: moment("2017-10-07").format("YYYY-MM-DD"), interval: 60 },
-      { name: "item 6", date: moment("2017-12-31").format("YYYY-MM-DD"), interval: 20 },
-      { name: "item 7", date: moment("2017-11-09").format("YYYY-MM-DD"), interval: 30 },
-      { name: "item 8", date: moment("2017-09-30").format("YYYY-MM-DD"), interval: 1 },
-      { name: "item 9", date: moment().format("YYYY-MM-DD"), interval: 6 },
-      { name: "item 10", date: moment("2017-09-30").format("YYYY-MM-DD"), interval: 5 },
+      { name: "vaske klær", date: moment().format("YYYY-MM-DD"), interval: 6 },
+      { name: "pusse sølvtøy", date: moment().format("YYYY-MM-DD"), interval: 100 },
+      { name: "trene", date: moment().format("YYYY-MM-DD"), interval: 3 },
+      { name: "vaske badet", date: moment().format("YYYY-MM-DD"), interval: 12 },
+      { name: "skifte sengetøy", date: moment("2017-10-07").format("YYYY-MM-DD"), interval: 16 },
+      { name: "skifte håndklær", date: moment().format("YYYY-MM-DD"), interval: 12 },
     ]
   };
 }

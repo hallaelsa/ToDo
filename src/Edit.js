@@ -116,7 +116,7 @@ class Edit extends Component {
                         style={styles.inputField}
                         value={this.state.interval.toString()}
                     />
-                    <Text style={styles.labels}>Begin: </Text>
+                    <Text style={styles.labels}>First reminder: </Text>
                     <DatePicker
                         date={this.state.date}
                         onDateChange={(time) => {this.setState({date: time});}}
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     labels: {
-        color: "deepskyblue",
+        color: "#000",
         fontSize: 14,
         marginTop: 10,
     },
